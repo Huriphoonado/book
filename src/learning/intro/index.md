@@ -15,6 +15,12 @@ of this class:
 
 ## Team Learning
 
+Team Members:
+* Jesus Ortiz
+* Brooke Robinson
+* Sigrunn Sky
+* Caleb Hsu
+
 ### Objective
 
 Develop a TODO list app.
