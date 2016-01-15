@@ -10,6 +10,13 @@ layout: layout.hbs
 
 Enhance your team's TODO list app.
 
+Team Members:
+* Jesus Ortiz
+* Brooke Robinson
+* Sigrunn Sky
+* Caleb Hsu
+
+
 ### Requirements
 
 * [x] Three additional fields need to be added to each task object: priority, type, and deadline.
