@@ -17,16 +17,34 @@
 
       <div class="container">
 
-        <h1>Tom Yeh</h1>
+        <h1>Willie Payne</h1>
 
-        <h2>Favorite Programming Languages</h2>
-        <ul class="collection">
-          <li class="collection-item">Javascript</li>
-          <li class="collection-item">Haskell</li>
+        <h3>Contact</h3>
+        <ul class="collection" id="contacts">
         </ul>
 
-        <h2>Favorite Food</h2>
+        <h3>Research</h3>
+        <ul class="collection" id="research">
+        </ul>
+
+        <h3>Education</h3>
+        <ul class="collection" id="education">
+        </ul>
+
+        <h3>Activities</h3>
+        <ul class="collection" id="activities">
+        </ul>
+
+        <h3>Favorite Programming Languages</h3>
+        <ul class="collection" id="languages">
+        </ul>
+
+        <h3>Favorite Foods</h3>
         <ul class="collection" id="foods">
+        </ul>
+
+        <h3>Favorite Books</h3>
+        <ul class="collection" id="books">
         </ul>
 
       </div>
@@ -34,7 +52,52 @@
       <script>
 
         // create a firebase reference to the root
-        var ref = new Firebase('https://hello-ucdd2.firebaseio.com/')
+        var ref = new Firebase('https://willie-hello-uccd2.firebaseio.com')
+
+        // read data from the location bio/contacts, only once
+        ref.child('bio/contacts').once('value', function(snapshot){
+          var contacts = snapshot.val()
+          contacts.forEach(function(contact){
+            $('#contacts').append('<li class="collection-item">' + contact + '</li>')
+          })
+        })
+
+        // read data from the location bio/research, only once
+        ref.child('bio/research').once('value', function(snapshot){
+          var research = snapshot.val()
+          research.forEach(function(group){
+            $('#research').append('<li class="collection-item">' + group + '</li>')
+          })
+        })
+
+        // read data from the location bio/education, only once
+        // Education consists of a degree type, college, gpa/grad status
+        ref.child('bio/education').once('value', function(edus){
+          edus.forEach(function(edu){
+            degree = edu.key()
+            school = edu.child("college").val();
+            gpa = edu.child("gpa").val();
+            $('#education').append('<li class="collection-item">' + degree + '</li>')
+            $('#education').append('<li style="margin-left: 30px;" class="collection-item">' + "School: " + school + '</li>')
+            $('#education').append('<li style="margin-left: 30px;" class="collection-item">' + "GPA/Grad Status: " + gpa + '</li>')
+          })
+        })
+
+        // read data from the location bio/activities, only once
+        ref.child('bio/activities').once('value', function(snapshot){
+          var activities = snapshot.val()
+          activities.forEach(function(activity){
+            $('#activities').append('<li class="collection-item">' + activity + '</li>')
+          })
+        })
+
+        // read data from the location bio/favorite_languages, only once
+        ref.child('bio/favorite_languages').once('value', function(snapshot){
+          var foods = snapshot.val()
+          foods.forEach(function(language){
+            $('#languages').append('<li class="collection-item">' + language + '</li>')
+          })
+        })
 
         // read data from the location bio/favorite_foods, only once
         ref.child('bio/favorite_foods').once('value', function(snapshot){
@@ -43,6 +106,15 @@
             $('#foods').append('<li class="collection-item">' + food + '</li>')
           })
         })
+
+        // read data from the location bio/favorite_books, only once
+        ref.child('bio/favorite_books').once('value', function(snapshot){
+          var foods = snapshot.val()
+          foods.forEach(function(book){
+            $('#books').append('<li class="collection-item">' + book + '</li>')
+          })
+        })
+
       </script>
     </body>
   </html>
