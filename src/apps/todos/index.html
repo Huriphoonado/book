@@ -17,8 +17,17 @@
       <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
 
       <div class="container">
-
-        <h1>Rice and Curry Team's App</h1>
+        <nav>
+          <div class="nav-wrapper blue-grey darken-1">
+            <a href="index.html" class="brand-logo right">Rice and Curry</a>
+            <ul id="nav-mobile" class="left hide-on-med-and-down">
+              <li class="active"><a href="index.html">Home</a></li>
+              <li><a href="low.html">Low</a></li>
+              <li><a href="medium.html">Medium</a></li>
+              <li><a href="high.html">High</a></li>
+            </ul>
+          </div>
+        </nav>
 
         <h2>Tasks</h2>
         <ul class="collection" id="tasks">
@@ -31,8 +40,9 @@
         // create a firebase reference to the root
         var ref = new Firebase('https://weekone.firebaseio.com/')
 
-        // read data from the location todos/tasks, only once
-        ref.child('todos/tasks').once('value', function(snapshot){
+        // read data from the location todos/tasks
+        ref.child('todos/tasks').on('value', function(snapshot){
+          $('#tasks').empty()
           var tasks = snapshot
           tasks.forEach(function(task){
             var key = task.key();
