@@ -41,19 +41,41 @@
         // create a firebase reference to the root
         var ref = new Firebase('https://weekone.firebaseio.com/')
 
+        // Callback function - triggered when completion switch toggled
+        function completedCallback(key) {
+          var callbackKey = '#' + key
+          var completedVal = $(callbackKey).prop('checked')
+          Materialize.toast('Task Updated', 1000);
+          ref.child('todos/tasks').child(key).update({
+           completed: completedVal
+          });
+        }
+
         // read data from the location todos/tasks
         ref.child('todos/tasks').on('value', function(snapshot){
           $('#tasks').empty()
           var tasks = snapshot
+
           tasks.forEach(function(task){
-            var key = task.child("title").val()
+            var key = task.key();
+            var title = task.child("title").val()
             var priority = task.child("priority").val();
             var assigned = task.child("assignedby").val();
-            var completed = task.child("completed").val();
             var deadline = task.child("deadline").val();
             var type = task.child("type").val();
+            var completed = task.child("completed").val();
+            
+            // Display checkbok according to state of completion
+            if (completed == true) {
+              // use variable id to uniquely differentiate each checkbox
+              var checkboxPosition = '<input checked type="checkbox" onClick="completedCallback(\'' + key + '\')" id=' + key + '>';
+            }
+            else {
+              var checkboxPosition = '<input type="checkbox" onClick="completedCallback(\'' + key + '\')" id=' + key + '>';
+            }
 
-            $('#tasks').append('<div class="row">' + '<div class="col s12 m6">' + '<div class="card blue-grey darken-1">' + '<div class="card-content white-text">' + '<span class="card-title">' + key + '</span>' + '<p>' + "Priority: " + priority + '<br>' + "Deadline: " + deadline + '<br>' + "Type: " + type + '<br>' + "Assigned By: " + assigned + '<br>' + "Completed: " + completed + '</p>' + '</div>' + '</div>' + '</div>' + '</div>')
+            $('#tasks').append('<div class="row">' + '<div class="col s12 m6">' + '<div class="card blue-grey darken-1">' + '<div class="card-content white-text">' + '<span class="card-title">' + title + '</span>' + '<p>' + "Priority: " + priority + '<br>' + "Deadline: " + deadline + '<br>' + "Type: " + type + '<br>' + "Assigned By: " + assigned + '<br>' + "Completed: " + "<div class=\"switch\">" + '<label>' + 'No' + checkboxPosition + '<span class="lever"></span>' + "Yes" + '</label> '+ '</div>' + '</p>' + '</div>' + '</div>' + '</div>' + '</div>')
+
           })
         })
       </script>

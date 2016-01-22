@@ -82,16 +82,6 @@
           <input type="date" class="datepicker" id="deadline">
         </div>
 
-        <label>Task Completed</label>
-        <div class="switch">
-          <label>
-            No
-            <input type="checkbox" id="completed">
-            <span class="lever"></span>
-            Yes2
-          </label>
-        </div>
-
         <div class="row">
           <div class="input-field col s12">
             <a class="waves-effect waves-light btn" id="submit">Submit</a>
@@ -116,31 +106,24 @@
           var type = $('#type').val()
           var deadline = $('#deadline').val()
           var priority = $('#priority').val()
-          var completed = $('#completed').prop('checked')
-          console.log(completed)
 
-          // TODO: retrieve more fields from form inputs
-
-          // TODO: add more fields to taskObject
           var taskObject = {
             title: title,
             assignedby: assignedby,
             type: type,
             deadline: deadline,
             priority: priority,
-            completed: 'false'
+            completed: false
           }
 
-          // TODO: add logic to validate form data before pushing the
-          // data to firebase, only push/set if the required fields are not empty
-
-          // TODO: study why push() and set() are both necessary
+          // Only submit form if all fields have been entered
           if (title == "" || assignedby == "" || type == "" || deadline == "" || priority == "") {
-            Materialize.toast('Missing Fields!', 4000)
+            Materialize.toast('Missing Fields!', 2000)
           }
           else {
             var newTaskRef = taskListRef.push()
-            newTaskRef.set(taskObject)            
+            newTaskRef.set(taskObject)
+            Materialize.toast('Task Added!', 1000);            
           }
         })
 
