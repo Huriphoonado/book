@@ -16,13 +16,22 @@
       <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
 
       <div class="container">
+        <nav>
+            <div class="nav-wrapper blue-grey darken-1">
+              <a href="index.html" class="brand-logo right">Willie Payne</a>
+              <ul id="nav-mobile" class="left hide-on-med-and-down">
+                <li><a href="index.html">Home</a></li>
+                <li class="active"><a href="subscribe.html">Subscribe</a></li>
+              </ul>
+            </div>
+          </nav>
 
-        <h1> Subscribe </h1>
+        <h2> Subscribe </h2>
 
         <div class="row">
           <div class="input-field col s12">
-            <input value="" id="email" type="text" class="validate">
-            <label for="email">Email</label>
+            <input value="" id="email" type="email" class="validate">
+            <label for="email" data-error="Invalid Email" data-success="Valid Email">Email</label>
           </div>
         </div>
 
@@ -40,18 +49,40 @@
       </div>
 
       <script>
+        var ref = new Firebase('https://willie-hello-uccd2.firebaseio.com')
+        var subscribeListRef = ref.child('subscribers')
 
         $('#submit').click(function(){
-          console.log('the submit button is clicked')
+          var emailValidated = $("#email").attr('class'); // Easier way?
 
-          // TODO: add code to submit an email address to your own Firebase
+          // What happens if one email submitted twice?
+          if (emailValidated == 'validate valid') {
+
+            var email = $('#email').val()
+            var newSubscriberRef = subscribeListRef.push()
+
+            var subscribeObject = {
+              email: email
+            }
+            
+            newSubscriberRef.set(subscribeObject)
+            Materialize.toast('Email Submitted!', 1000); 
+          }
+          else {
+            Materialize.toast('Invalid Email Address', 1000); 
+          }
 
         })
 
-
-        // TODO: add code to pull emaill addresses from your own Firebase,
-        // and populate "#emails" with these email addresses
-
+        // Populate "#emails" with these email addresses
+        ref.child('subscribers').on('value', function(snapshot){
+          $('#emails').empty()
+          var emails = snapshot
+          emails.forEach(function(subscriber){
+            var email = subscriber.child("email").val() 
+            $('#emails').append('<li class="collection-item">' + email + '</li>')
+          })
+        })
 
       </script>
     </body>
