@@ -23,24 +23,48 @@
       <script src="/js/leaflet.label.js"></script>
 
       <div class="container">
-
-        <h1>My Favoirte Cities</h1>
-        <div id="cities"></div>
-        <div id="map" style="height:500px"></div>
+        <nav>
+            <div class="nav-wrapper blue-grey darken-1">
+              <a href="index.html" class="brand-logo right">Willie Payne</a>
+              <ul id="nav-mobile" class="left hide-on-med-and-down">
+                <li><a href="index.html">Home</a></li>
+                <li class="active"><a href="cities.html">Cities</a></li>
+                <li><a href="subscribe.html">Subscribe</a></li>
+              </ul>
+            </div>
+        </nav>
+        <h2>City Weather</h2>
+        
+        <div class="row">
+          <div class="col s7" id="cities"></div>
+          <div id="map" style="height:300px"></div>
+          <div class="input-field col s5">
+            <select id="citySel">
+              <option value="boston">Boston</option>
+              <option value="denver">Denver</option>
+              <option value="newyork">New York</option>
+              <option value="portland">Portland</option>
+              <option value="sanfrancisco">San Francisco</option>
+            </select>
+            <label>Select a City</label>
+          </div>
+        </div>
+      
       </div>
 
       <script>
 
 // create a firebase reference to the root
-var weatherRef = new Firebase('https://publicdata-weather.firebaseio.com/austin');
-
-var data
+var weatherRef = new Firebase('https://publicdata-weather.firebaseio.com');
+var cityRef = weatherRef.child($('#citySel').val())
 
 // read data from only once
-weatherRef.once('value', function(snapshot){
+cityRef.on('value', function(snapshot){
+  $('#cities').empty()
+  console.log($('#citySel').val())
   var city = snapshot.val()
   mapCity(city)
-  displayCity(city, 'austin')
+  displayCity(city, $( "#citySel option:selected" ).text())
 })
 
 var attributionText = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a       href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
@@ -62,22 +86,51 @@ markersLayerGroup.addTo(map)
 // visualize cities on the map
 function mapCity(city){
   console.log('mapCity', city)
+  markersLayerGroup.clearLayers()
   var latlng = [city.latitude, city.longitude]
   var circle = L.circle(latlng, 10, {
       color: 'red',
       fillColor: '#f03',
       fillOpacity: 0.5
-  }).bindLabel('Austin')
+  }).bindLabel($('#citySel').val())
   
   markersLayerGroup.addLayer(circle)
 }
 
 function displayCity(city, name){
-  console.log('displayCity', city)
-  $('#cities').append('<li class="collection-item">' + name +
-    ' humidity = ' +
-    JSON.stringify(city.currently) + '</li>')
+  $('#cities').empty()
+
+  icon = city.currently.icon
+  imageRef = "images/" + icon + ".jpg"
+  currentCondition = city.hourly.summary
+  temperature = city.currently.temperature
+  windSpeed = city.currently.windSpeed
+  humidity = city.currently.humidity
+  cloudCover = city.currently.cloudCover
+  forecast = city.daily.summary
+
+  var time = new Date( city.currently.time * 1000 );
+  time = time.getHours() + ":" + time.getMinutes()
+
+  $('#cities').append('<div class="card">' + '<div class="card-image waves-effect waves-block waves-light">' + '<img class="activator" src=\'' + imageRef + '\'>' + '</div>' + '<div class="card-content">' + '<span class="card-title activator grey-text text-darken-4">' + name + '<i class="material-icons right">more_vert</i></span>' + '<p>' + currentCondition + '</p>' + '</div>' + '<div class="card-reveal">' + '<span class="card-title grey-text text-darken-4">' + name + '<i class="material-icons right">close</i></span>' + '<p>' + "Temperature: " + temperature + '<br>' + "Time: " + time + '<br>' + "Wind Speed: " + windSpeed + '<br>' +  "Humidity: " + humidity + '<br>' + "Cloud Cover: " + cloudCover + '<br>' + "Forecast: " + forecast + '<br>' + '</p>' + '</div>' + '</div>')
 }
+
+$('#citySel').change(function() {
+  console.log($('#citySel').val())
+  cityRef = weatherRef.child($('#citySel').val())
+  cityRef.off() // stop listening to previous city's values
+
+  cityRef.on('value', function(snapshot){
+    console.log($('#citySel').val())
+    var city = snapshot.val()
+    mapCity(city)
+    displayCity(city, $( "#citySel option:selected" ).text())
+  })
+})
+
+$(document).ready(function() {
+  $('select').material_select();
+});
 
       </script>
     </body>
