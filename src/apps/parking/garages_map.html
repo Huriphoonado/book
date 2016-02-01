@@ -54,29 +54,19 @@
       </div>
 		
   <script>
-		// create a firebase reference to the root
-		var ref = new Firebase('https://publicdata-parking.firebaseio.com');
-		var attributionText = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
+// create a firebase reference to the root
+var ref = new Firebase('https://publicdata-parking.firebaseio.com');
+var attributionText = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
 		// create a layer group to hold all the markers
-		var markersLayerGroup = L.layerGroup();
+		var garagesLayerGroup = L.layerGroup();
+		var usersLayerGroup = L.layerGroup();
 		var i=0;
-		var data;
-
-		// read data from the location san_francisco/garages, only once
-		ref.child('san_francisco/garages').on('value', function(snapshot){
-		  data = snapshot.val()
-		  console.log('data is loaded', data)
-
-		  var garages = _.filter(data, function(d){
-			  return _.has(d, 'open_spaces')
-		  })
-
-		  drawGarages(garages)
-		});
 
 		// create the map
+		var mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
 		var map = L.map($('#map')[0]).setView([37.78, -122.41], 13)
-		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+		map.setLayers
+		L.tileLayer(mbUrl, {
 			attribution: attributionText,
 			maxZoom: 18,
 			id: 'doubleshow.noeko77m',
@@ -84,7 +74,26 @@
 		}).addTo(map)
 
 		// add the makers layer group to the map
-		markersLayerGroup.addTo(map)
+		garagesLayerGroup.addTo(map)
+		usersLayerGroup.addTo(map)
+
+		var grayscale   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: attributionText}),
+		    streets  = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: attributionText});
+
+		var overlayMaps = {
+    		"Users": usersLayerGroup,
+    		"Garages": garagesLayerGroup
+		};
+
+		var baseLayers = {
+			"Grayscale": grayscale,
+			"Streets": streets
+		};
+
+		L.control.layers(baseLayers, overlayMaps).addTo(map);
+
+		drawUsers()
+		addGaragesToMap()
 		
 		var showmore = function(key) {
 			//$("p").show();
@@ -128,31 +137,43 @@
 								}
 							});
 						}
-							
+
 					}	
 				}
 				$('#p1').append(str);
 			});
 		};
-				
+
+		function addGaragesToMap() {
+			ref.child('san_francisco/garages').on('value', function(snapshot){
+				var data = snapshot.val()
+				console.log('data is loaded', data)
+
+				var garages = _.filter(data, function(d){
+					return _.has(d, 'open_spaces')
+				})
+				drawGarages(garages)
+			});
+		}
+
 		// visualize garages on a map
 		function drawGarages(garages){
 
 		  // clear all existing markers (if any)
-		  markersLayerGroup.clearLayers()
-			var j=0;
+		  garagesLayerGroup.clearLayers()
+		  var j=0;
 		  _.forEach(garages, function(garage, key){
-		    
-			j +=1;
-			var points = garage.points;
-			var latlng = [points[0], points[1]];
-			var garageName= garage.friendlyName;
-			var openSpaces= garage.open_spaces;
-			var cost = garage.rates;
-			currentRate = determineCurrentRate(cost)
+
+		  	j +=1;
+		  	var points = garage.points;
+		  	var latlng = [points[0], points[1]];
+		  	var garageName= garage.friendlyName;
+		  	var openSpaces= garage.open_spaces;
+		  	var cost = garage.rates;
+		  	currentRate = determineCurrentRate(cost)
 			//console.log(currentRate);
 
-				
+
 			// create a circle layer
 			var circle = L.circle(latlng, 10, {
 				color: 'blue',
@@ -162,61 +183,77 @@
 			//.bindPopup(garageName+'<br>Open Spaces: ' + openSpaces +'<br>  <a class="label" onclick=showmore("' + i + '")  onmouseover="" style="cursor: pointer;" class="teal-text text-darken-3">more detail</a> ' )
 
 			// add the circle layer to the makers layer group
-			markersLayerGroup.addLayer(circle)
-		  })
+			garagesLayerGroup.addLayer(circle)
+		})
+		}
+
+		function drawUsers() {
+			var ref = new Firebase('https://team-titans.firebaseio.com/');
+			var usersRef = ref.child("users");
+
+			usersLayerGroup.clearLayers()
+			usersRef.on("value", function(snapshot) {
+				newUsers = snapshot.val()
+				usersLayerGroup.clearLayers()
+				_.forEach(newUsers, function(newUser){
+					//console.log(newUser.name)
+					var marker = L.marker([newUser.lat, newUser.lon])
+					usersLayerGroup.addLayer(marker)
+				});
+			});
 		}
 		
 		function determineCurrentRate(parkingHours) {
-		  var parkingRateFloat = 0
-		  var parkingRateString = 'None'
-		  var currentdate = new Date();
-		  var datetime = ((currentdate.getHours() - 1) * 60) + currentdate.getMinutes()
+			var parkingRateFloat = 0
+			var parkingRateString = 'None'
+			var currentdate = new Date();
+			var datetime = ((currentdate.getHours() - 1) * 60) + currentdate.getMinutes()
 			if (Array.isArray(parkingHours)){
-			for (var i = 0; i < parkingHours.length; i++ ) {
-			  if (typeof parkingHours[i]['BEG'] != 'undefined') {
-				var beginningTime = timeToInt(parkingHours[i]['BEG'], 'beginning')
-				var endingTime = timeToInt(parkingHours[i]['END'], 'end')
-				if (datetime < endingTime && datetime >= beginningTime) {
-				  parkingRateFloat = parseFloat(parkingHours[i]['RATE'])
-				  parkingRateString = '$' + (parkingHours[i]['RATE']) + ' ' + (parkingHours[i]['RQ'])
-				  break;
+				for (var i = 0; i < parkingHours.length; i++ ) {
+					if (typeof parkingHours[i]['BEG'] != 'undefined') {
+						var beginningTime = timeToInt(parkingHours[i]['BEG'], 'beginning')
+						var endingTime = timeToInt(parkingHours[i]['END'], 'end')
+						if (datetime < endingTime && datetime >= beginningTime) {
+							parkingRateFloat = parseFloat(parkingHours[i]['RATE'])
+							parkingRateString = '$' + (parkingHours[i]['RATE']) + ' ' + (parkingHours[i]['RQ'])
+							break;
+						}
+					}
 				}
-			  }
 			}
-		  }
-		  return [parkingRateFloat, parkingRateString]
+			return [parkingRateFloat, parkingRateString]
 		}
 		
 		// Converts the time strings from firebase to an int representing current time minutes
 		function timeToInt(timeString, beginningOrEnd) {
-		  timeArray = timeString.split(":")
-		  var hours = parseInt(timeArray[0])
-		  var theRest = timeArray[1]
-		  var theRestArray = timeArray[1].split(" ")
-		  var minutes = parseInt(theRestArray[0])
-		  var amOrPm = theRestArray[1]
+			timeArray = timeString.split(":")
+			var hours = parseInt(timeArray[0])
+			var theRest = timeArray[1]
+			var theRestArray = timeArray[1].split(" ")
+			var minutes = parseInt(theRestArray[0])
+			var amOrPm = theRestArray[1]
 
-		  if (amOrPm == 'PM') {
-			if (hours != 12) {
-			  hours = hours + 12
+			if (amOrPm == 'PM') {
+				if (hours != 12) {
+					hours = hours + 12
+				}
+				timeNum = (hours * 60) + minutes
+				return timeNum
 			}
-			timeNum = (hours * 60) + minutes
-			return timeNum
-		  }
-		  else {
+			else {
 			// Midnight is a special case - 0 if beginning, 24 if end
 			if (hours == 12) {
-			  if (beginningOrEnd == 'beginning') {
-				hours = 0
-			  }
-			  else {
-				hours = 24
-			  }
+				if (beginningOrEnd == 'beginning') {
+					hours = 0
+				}
+				else {
+					hours = 24
+				}
 			}
 			timeNum = (hours * 60) + minutes
-		  }
-		  return timeNum
 		}
+		return timeNum
+	}
 		
       </script>
 	  
