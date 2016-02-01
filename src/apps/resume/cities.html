@@ -38,6 +38,7 @@
         <div class="row">
           <div class="col s7" id="cities"></div>
           <div id="map" style="height:300px"></div>
+          <br>
           <div class="input-field col s5">
             <select id="citySel">
               <option value="boston">Boston</option>
@@ -85,18 +86,28 @@ markersLayerGroup.addTo(map)
 
 // visualize cities on the map
 function mapCity(city){
-  console.log('mapCity', city)
   markersLayerGroup.clearLayers()
+
+  icon = city.currently.icon
+  imageRef = "images/" + icon + ".jpg"
+  currentCondition = city.currently.summary
+  temperature = city.currently.temperature
+  cloudCover = city.currently.cloudCover
+
+  fillColor = returnTempColor(temperature)
+
   var latlng = [city.latitude, city.longitude]
-  var circle = L.circle(latlng, 10, {
-      color: 'red',
-      fillColor: '#f03',
-      fillOpacity: 0.5
-  }).bindLabel($('#citySel').val())
+  var circle = L.circle(latlng, 1000, {
+      color: fillColor,
+      fillColor: fillColor,
+      fillOpacity: cloudCover
+  }).bindLabel(currentCondition)
   
   markersLayerGroup.addLayer(circle)
+  map.setView([city.latitude, city.longitude + .1], 12) // Longitude doesn't position correctly
 }
 
+// Displays the city and weather information as a Materialize Card
 function displayCity(city, name){
   $('#cities').empty()
 
@@ -115,6 +126,7 @@ function displayCity(city, name){
   $('#cities').append('<div class="card">' + '<div class="card-image waves-effect waves-block waves-light">' + '<img class="activator" src=\'' + imageRef + '\'>' + '</div>' + '<div class="card-content">' + '<span class="card-title activator grey-text text-darken-4">' + name + '<i class="material-icons right">more_vert</i></span>' + '<p>' + currentCondition + '</p>' + '</div>' + '<div class="card-reveal">' + '<span class="card-title grey-text text-darken-4">' + name + '<i class="material-icons right">close</i></span>' + '<p>' + "Temperature: " + temperature + '<br>' + "Time: " + time + '<br>' + "Wind Speed: " + windSpeed + '<br>' +  "Humidity: " + humidity + '<br>' + "Cloud Cover: " + cloudCover + '<br>' + "Forecast: " + forecast + '<br>' + '</p>' + '</div>' + '</div>')
 }
 
+// Change the displayed city and map, if the user selects a new one
 $('#citySel').change(function() {
   console.log($('#citySel').val())
   cityRef = weatherRef.child($('#citySel').val())
@@ -127,6 +139,21 @@ $('#citySel').change(function() {
     displayCity(city, $( "#citySel option:selected" ).text())
   })
 })
+
+function returnTempColor(temperature) {
+  if (temperature < 10) {return '#311b92';}
+  else if (temperature < 20) {return '#4527a0';}
+  else if (temperature < 30) {return '#512da8';}
+  else if (temperature < 40) {return '#5e35b1';}
+  else if (temperature < 50) {return '#673ab7';}
+  else if (temperature < 60) {return '#f44336';}
+  else if (temperature < 70) {return '#e53935';}
+  else if (temperature < 80) {return '#d32f2f';}
+  else if (temperature < 90) {return '#c62828';}
+  else if (temperature < 100) {return '#b71c1c';}
+  else {return '#d50000';}
+
+}
 
 $(document).ready(function() {
   $('select').material_select();
