@@ -14,6 +14,7 @@
     <script src="lib/react-dom.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
   </head>
   <body>
     <div class="container">
@@ -48,6 +49,15 @@
     <!-- render react components -->
     <script type="text/babel">
 
+      var skillsRef = new Firebase('https://willie-hello-uccd2.firebaseio.com/skills');
+      var weatherRef = new Firebase('https://publicdata-weather.firebaseio.com');
+      var taskRef = new Firebase('https://weekone.firebaseio.com/');
+
+      var favoriteCities = ['boston', 'denver', 'newyork', 'portland', 'sanfrancisco']
+      var favoriteCityNames = {'boston': 'Boston', 'denver': 'Denver', 'newyork': 'New York', 'portland': 'Portland', 'sanfrancisco': 'San Francisco'}
+
+      var taskCardColors = {'low': 'card blue-grey', 'medium': 'card blue-grey darken-2', 'high': 'card blue-grey darken-4'}
+
       ReactDOM.render(
         <MyComponents.NavBar/>,
         $('#navbar').get(0)
@@ -59,29 +69,73 @@
       );
 
       // TODO: load tasks data from Firebase
-      var tasks = [{name: 'go to the movies'}, {name: 'sleep'}]
+      //var taskRef = new Firebase('https://weekone.firebaseio.com/')
+      //var tasks = [{name: 'go to the movies'}, {name: 'sleep'}]
+    // read data from the location todos/tasks
+      taskRef.child('todos/tasks').on('value', function(taskList){
+        var tasks = []
+        taskList.forEach(function(task){
+          var key = task.key();
+          var name = task.child("title").val()
+          var priority = task.child("priority").val();
+          var assigned = task.child("assignedby").val();
+          var deadline = task.child("deadline").val();
+          var type = task.child("type").val();
+          var checkBoxState = task.child("completed").val();
+          var cardColor = taskCardColors[priority];
+          if (assigned == 'Willie') {
+            tasks.push({name: name, checkBoxState: checkBoxState, cardColor: cardColor, priority: priority, assigned: assigned, deadline: deadline, type: type})
+          }
+          ReactDOM.render(
+            <MyComponents.TaskList tasks={tasks}/>,
+            $('#tasks').get(0)
+          );
+        });
+      });
 
-      ReactDOM.render(
-        <MyComponents.TaskList tasks={tasks}/>,
-        $('#tasks').get(0)
-      );
+      // Weather Data
+      weatherRef.on('value', function(cityList) {
+        var cities = []
+        cityList.forEach(function(cityObj) {
+          if (favoriteCities.indexOf(cityObj.key()) != -1) {
+            var city = cityObj.val()
+            var name = favoriteCityNames[cityObj.key()]
+            var icon = city.currently.icon
+            var imageRef = "../images/" + icon + ".jpg"
+            var currentCondition = city.hourly.summary
+            var temperature = city.currently.temperature
+            var windSpeed = city.currently.windSpeed
+            var humidity = city.currently.humidity
+            var cloudCover = city.currently.cloudCover
+            var ozone = city.currently.ozone
+            var pressure = city.currently.pressure
+            var visibility = city.currently.visibility
+            var dewPoint = city.currently.dewPoint
+            var nearestStormDistance = city.currently.nearestStormDistance
+            var forecast = city.daily.summary
+            cities.push({name: name, imageRef: imageRef, currentCondition: currentCondition, temperature: temperature, windSpeed: windSpeed, humidity: humidity, cloudCover: cloudCover, forecast: forecast, ozone: ozone, pressure: pressure, visibility: visibility, dewPoint: dewPoint, nearestStormDistance: nearestStormDistance})
+            ReactDOM.render(
+              <MyComponents.CityList cities={cities}/>,
+              $('#cities').get(0)
+            );
+          }
+        });
+      });
 
-      // TODO: load city weather data from Firebase
-      var cities = [{name: 'Austin'}, {name: 'New York'}]
 
-      ReactDOM.render(
-        <MyComponents.CityList cities={cities}/>,
-        $('#cities').get(0)
-      );
-
-
-      // TODO: load skill data from Firebase
-      var skills = [{name: 'JavaScript', years: 5}, {name: 'Karate', years: 2}]
-
-      ReactDOM.render(
-        <MyComponents.SkillList skills={skills}/>,
-        $('#skills').get(0)
-      );
+      // Skill Data
+      var skills = []
+      skillsRef.once('value', function(skillList){
+        skillList.forEach(function(skill){
+          var years = skill.val().years
+          var key = skill.key()
+          skills.push({name: key, years: years})
+        })
+        ReactDOM.render(
+          <MyComponents.SkillList skills={skills}/>,
+          $('#skills').get(0)
+        );
+      });
 
     </script>
   </body>

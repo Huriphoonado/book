@@ -2,15 +2,37 @@ MyComponents.Task = React.createClass({
 
   render: function() {
     return (
-      <div className="card">
-        <div className="card-content">
-        TODO: This is a component to display a task.
-        Raw props data is {JSON.stringify(this.props.task)}
+      <div className="row">
+        <div className="col s12 m6">
+          <div className={this.props.task.cardColor}>
+            <div className="card-content white-text">
+              <span className="card-title">{this.props.task.name}</span>
+              <p>
+              Assigned To: {this.props.task.assigned}<br />
+              Deadline: {this.props.task.deadline}<br />
+              Type: {this.props.task.type}<br />
+              Priority: {this.props.task.priority}<br />
+              </p>
+            </div>
+            <div className="card-action">
+              <div className="switch">
+                <label>
+                  In Progress
+                  <input disabled checked={this.props.task.checkBoxState} type="checkbox" />
+                  <span className="lever"></span>
+                  Completed
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
-  }
+  },
 
+  testFunc: function() {
+    console.log("Callback!")
+  }
 });
 
 MyComponents.TaskList = React.createClass({
@@ -23,11 +45,8 @@ MyComponents.TaskList = React.createClass({
     return (
       <div className="card">
         <div className="card-content">
-        TODO: This is a component to display a list of tasks
-        assigned to me. Raw props data is {JSON.stringify(this.props.tasks)}
-
+        Currently I have {this.props.tasks.length} tasks assigned to me.
         {taskElements}
-
         </div>
       </div>
     );
