@@ -30,7 +30,7 @@ function simulate(){
   var lon = city_location.lon + radius * (Math.random() - 0.5) * 2;
   var price = Math.floor(Math.random() * (1000 - 20 + 1)) + 20; // Int ranges between 20 and 1000
   var rating = ratings[Math.floor(Math.random() * (8 - 0 + 1))];
-  var specialty = specialties[Math.floor(Math.random() * (8 - 0 + 1))];
+  var specialty = specialties[Math.floor(Math.random() * (7 - 0 + 1))];
   var type = types[Math.floor(Math.random() * (1 - 0 + 1))];
   
   var person = {
