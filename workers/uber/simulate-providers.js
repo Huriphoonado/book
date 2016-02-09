@@ -2,6 +2,10 @@ var _ = require('lodash')
 var random_name = require('node-random-name');
 var Firebase = require('firebase');
 
+var ref = new Firebase('https://cookit.firebaseio.com');
+var usersRef = ref.child("providers");
+
+
 // San Francisco
 var city_location = {
   lat: 37.78,
@@ -38,17 +42,28 @@ function simulate(){
 
 function enter(person){
   console.log('enter', person)
-  // TODO: put this person in the Firebase
-  // var ref = new Firebase('your-firebase-url')
-  // ...
+  
+  var personRef = usersRef.child(person.name);
+
+  personRef.set({
+    lat: person.lat,
+    lon: person.lon,
+    name: person.name
+  });
 }
 
 function leave(person){
   console.log('leave', person)
-  // TODO: remove this person from the Firebase
-  // var ref = new Firebase('your-firebase-url')
-  // ...
+  var personRef = usersRef.child(person.name);
+
+  personRef.remove();
 }
+
+function clear(){
+  usersRef.remove()
+}
+
+clear()
 
 // run each second
 setInterval(simulate, 2000)
