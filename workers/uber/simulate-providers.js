@@ -25,7 +25,7 @@ function simulate(){
   // generate a random person with a random name,
   // random location, and random duration
   var name = random_name();
-  var duration = 1 + 15 * Math.random();
+  var duration = 10 + 30 * Math.random();
   var lat = city_location.lat + radius * (Math.random() - 0.5) * 2;
   var lon = city_location.lon + radius * (Math.random() - 0.5) * 2;
 
@@ -121,4 +121,4 @@ function clear(){
 clear()
 
 // run each second
-setInterval(simulate, 2000)
+setInterval(simulate, 1000)
