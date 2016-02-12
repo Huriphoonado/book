@@ -91,8 +91,8 @@ function move(person){
   var typeRef = usersRef.child(person.type);
   var personRef = typeRef.child(person.name);
 
-  var latChange = (Math.floor(Math.random() * (3)) - 1) * 0.01;
-  var lonChange = (Math.floor(Math.random() * (3)) - 1) * 0.01;
+  var latChange = (Math.floor(Math.random() * (3)) - 1) * 0.001;
+  var lonChange = (Math.floor(Math.random() * (3)) - 1) * 0.001;
   person.duration = person.duration - 1.0
   person.lon = person.lon + lonChange
   person.lat = person.lat + latChange
