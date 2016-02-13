@@ -121,4 +121,4 @@ function clear(){
 clear()
 
 // run each second
-setInterval(simulate, 1000)
+setInterval(simulate, 3000)
