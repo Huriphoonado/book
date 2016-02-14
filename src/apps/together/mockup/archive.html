@@ -37,30 +37,46 @@
 	  		</div>
 	  		<ul id="slide-out" class="side-nav fixed">
 	  					<object id="front-page-logo" style="height:100px;margin-left:40px;" type="image/svg+xml" data="logo.svg">Your browser does not support SVG</object>
-	  			<li class="active bold"><a href="index.html">Discuss</a></li>
-	  			<li class="bold"><a href="archive.html">Archive</a></li>
+	  			<li class="bold"><a href="index.html">Discuss</a></li>
+	  			<li class="active bold"><a href="archive.html">Archive</a></li>
 	  			<li class="bold"><a href="about.html">About</a></li>
 	  		</ul>
   		</header>
   		<main>
         <div class="row">
-          <div class="col s12 l6 offset-l1">
-            <div class="card blue-grey darken-1 z-depth-4">
-              <div class="card-content white-text">
-                <p>Sharon Van Etten is one of my favorite artists, especially her new album. Great song!</p>
-              </div>
-              <div class="card-action white-text">Willie</div>
-            </div>
+        <!-- Modal Trigger -->
+          <div class="col s12 l11 offset-l1">
+            <a class="waves-effect waves-light btn-large modal-trigger" href="#modal1"><i class="material-icons left">list</i>1/26/16</a>
+            <a class="waves-effect waves-light btn-large modal-trigger" href="#modal1"><i class="material-icons left">list</i>2/2/16</a>
+            <a class="waves-effect waves-light btn-large modal-trigger" href="#modal1"><i class="material-icons left">list</i>2/9/16</a>
           </div>
         </div>
-        <div class="row">
-          <div class="col s12 l6 offset-l2">
-            <div class="card blue-grey darken-1 z-depth-4">
-              <div class="card-content white-text">
-                <p>Yeah Willie, you have great taste in music!</p>
-              </div>
-              <div class="card-action white-text">Branton</div>
-            </div>
+
+        <!-- Modal Structure -->
+        <div id="modal1" class="modal bottom-sheet">
+          <div class="modal-content">
+            <h4>2/2/16</h4>
+            <ul class="collection">
+              <li class="collection-item">
+                <span class="title">Willie</span>
+                <p>Some Thoughts</p>
+              </li>
+              <li class="collection-item">
+                <span class="title">Branton</span>
+                <p>Other Thoughts</p>
+              </li>
+              <li class="collection-item">
+                <span class="title">Willie</span>
+                <p>Some Thoughts</p>
+              </li>
+              <li class="collection-item">
+                <span class="title">Branton</span>
+                <p>Other Thoughts</p>
+              </li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-teal btn-flat">Close</a>
           </div>
         </div>
   		</main>
@@ -107,3 +123,8 @@
   	</body>
 </html>
 
+<script>
+$(document).ready(function(){
+    $('.modal-trigger').leanModal();
+  }); 
+</script>
