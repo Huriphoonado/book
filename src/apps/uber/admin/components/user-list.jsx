@@ -1,10 +1,10 @@
 MyComponents.User = React.createClass({
  render: function() {
    return (
-   	<tr>
-   		<td>{ this.props.user['username'] }</td>
-   		<td>{ this.props.user['status'] }</td>
-    </tr>
+   	<li>
+   		<div className="collapsible-header">{ this.props.user['username'] }</div>
+   		<div className="collapsible-body"><p>{ this.props.user['status'] }</p></div>
+    </li>
    );
  }
 });
@@ -18,20 +18,18 @@ class UserList extends React.Component {
 
     return <div>
       <div>
-        <pre></pre>
-        <table>
-        <thead>
-          <tr>
-              <th data-field="uName">User Name</th>
-              <th data-field="status">Status</th>
-          </tr>
-        </thead>
-        <tbody>
+        <ul className="collapsible" data-collapsible="expandable">
           { users }
-        </tbody>
-      </table>
+        </ul>
       </div>      
     </div>
+  }
+  componentDidMount(){
+    $(document).ready(function(){
+    $('.collapsible').collapsible({
+      accordion : false
+    });
+   });
   }
 }
 MyComponents.UserList = UserList

@@ -11,8 +11,7 @@ class StdProviderList extends React.Component {
             			<div className="card-content white-text">
             	  			<span className="card-title">{providers[key].name}</span>
               				<p>
-              					{providers[key].specialty}<br />
-              					{providers[key].rating} Stars<br />
+              					{providers[key].rating} Stars
               				</p>
             			</div>
           			</div>)
