@@ -1,8 +1,14 @@
 MyComponents.User = React.createClass({
  render: function() {
+   if ( typeof this.props.user['username'] == "undefined") {
+      var dispayName =  this.props.user['displayName']
+    }
+    else {
+      var dispayName =  this.props.user['username']
+    }
    return (
    	<li>
-   		<div className="collapsible-header">{ this.props.user['username'] }</div>
+   		<div className="collapsible-header">{ dispayName }</div>
    		<div className="collapsible-body"><p>{ this.props.user['status'] }</p></div>
     </li>
    );

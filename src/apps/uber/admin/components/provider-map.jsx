@@ -6,7 +6,7 @@ class ProviderMap extends React.Component {
   const providers = this.props.premProviders
     const providerElements = _.map(providers, function(p,i){
       var latlng = [p.lat, p.lon]
-      var myIconURL = '../icons/' + p.specialty + '.png'
+      var myIconURL = '../icons/' + p.specialty.toLowerCase() + '.png'
       var myIcon = L.icon({
         iconUrl: myIconURL,
         iconSize:  [32]
