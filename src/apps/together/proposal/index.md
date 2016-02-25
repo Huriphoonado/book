@@ -6,7 +6,7 @@ layout: layout.hbs
 
 ## Team Members
 
-(TODO: Names)
+Paige Johnson, Betty Lu, Alex Okeson, Willie Payne, Tyler Tafoya
 
 ## Ideation
 
@@ -15,11 +15,11 @@ the integration of creative ideas from every team member.
 
 * What is the name of your app?
 
-(TODO: Answer)
+Music For the People
 
 * What collaborative activity can people do together using your app?
 
-(TODO: Answer)
+Guests at a party or group hangout decide by popular vote what music to listen to. There is also a discussion forum where people may suggest songs or genres or post general thoughts about what is being played. An admin is responsible for actually playing the music, selecting the song to play in case of a tie or no votes, and posting on the web app the current song being played, the song that is next up, and the songs that are up for a vote. (In future iterations, some of these things may be automated.)
 
 * What is the ideal number of concurrent users (must be at least 10 but no more than 40)?
 
@@ -27,23 +27,23 @@ the integration of creative ideas from every team member.
 
 * What skills do people need in order to do this activity?
 
-(TODO: Answer)
+People do not need any skills, only an enjoyment of music.
 
 * Is this activity for fun or for something practical?
 
-(TODO: Answer)
+This activity is primarily for fun to expand people's roles at a party.
 
 * How can a person see what everyone else is doing?
 
-(TODO: Answer)
+People can see the current votes for songs being played as well as all comments uploaded to a discussion thread. People can also see titles for the current music being played.
 
 * How can a person see the most recent result of everyone's collaborative effort?
 
-(TODO: Answer)
+People can only see the 
 
 * What can an admin see (i.e., God's mode)?
 
-(TODO: Answer)
+The admin has controls to display the current song playing and set the songs available in the current vote, the ability to list the names behind all of the votes, and potentially an archive of past discussions. as well as a larger. The admin may uniquely have access to a Spotify playlist being streamed that will be embedded in the web app.
 
 ## Contributions
 
