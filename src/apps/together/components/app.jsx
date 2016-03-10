@@ -19,6 +19,9 @@ class App extends React.Component {
             <div className="col s12 m6">
               <MyComponents.SongForm
                 user={this.props.data.user}/>
+              <MyComponents.SongList
+                user={this.props.data.user}
+                songList={this.props.data.songList}/>
             </div>
           </div>  
         </div>
@@ -28,9 +31,3 @@ class App extends React.Component {
 }
 
 MyComponents.App = App
-
-/*<MyComponents.MapView
-            premProviders={this.props.data.premProviders}
-            stdProviders={this.props.data.stdProviders}
-            center={this.props.data.center}
-            user={this.props.data.user}/>*/

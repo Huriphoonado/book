@@ -35,6 +35,7 @@ songListRef.on('value', function(snapshot){
     render()
 })
 
+// Make sure this pulls in the order we want and only grabs a subset of the messages
 songDiscussionRef.on('value', function(snapshot){
     data.songDiscussion = _.values(snapshot.val())
     render()

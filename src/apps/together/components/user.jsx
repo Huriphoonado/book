@@ -2,9 +2,7 @@ class User extends React.Component {
   	render(){
 	    if (this.props.user){
 	      	// user is authenticated
-	      	return(
-	      		<div className="container"></div>
-	    	);
+	      	return(<div></div>);
 	    } 
 	    else {
 	      // user is not set
