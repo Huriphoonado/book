@@ -158,9 +158,7 @@ actions.logout = function(){
     data.user = null
 
     render()
-
   }
-
 }
 actions.logoutFB = function(){
 
