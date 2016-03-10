@@ -17,7 +17,8 @@ class App extends React.Component {
         <div className="container">
           <div className="row">
             <div className="col s12 m6">
-            <MyComponents.SongForm>
+              <MyComponents.SongForm
+                user={this.props.data.user}/>
             </div>
           </div>  
         </div>
