@@ -1,15 +1,12 @@
 MyComponents.Comment = React.createClass({
   render: function() {
     return (
-      <div className="card blue-grey darken-1 z-depth-0">
-        <div className="card-content white-text">
-          {this.props.discuss.comment}
-          <br/><br/>
-          <div className="chip">
-            <img src={this.props.discuss.imageURL}/>
-            {this.props.discuss.userName}
-          </div>
+      <div>
+        <div className="chip blue-grey white-text">
+          <img src={this.props.discuss.imageURL}/>
+          <b>{this.props.discuss.userName}:</b> {this.props.discuss.comment}
         </div>
+        <br/> <br/>
       </div>
     );
   }
@@ -18,14 +15,14 @@ MyComponents.Comment = React.createClass({
 class Comments extends React.Component {
   render(){
     var u = this.props.user
-    var comments = this.props.Comments.map(function(c,i){
+  	var comments = this.props.Comments.map(function(c,i){
       return <MyComponents.Comment discuss={c} key={i} user={u}/>
     })
 
     if (this.props.user) {
       return (
         <div>
-          <div className="card">
+          <div className="card grey hoverable">
             <div className="card-content">
               <div className="row">
                 <div className="col s1"><i className="small material-icons">chat</i></div>
@@ -37,19 +34,14 @@ class Comments extends React.Component {
               <div id="scrollable">
                 { comments }
               </div>
-            </div>
-            <div className="card-content">
-              <ul>
-                <div className="row">
-                  <div className="input-field col m12 s12">
-                    <textarea id="comment" className="materialize-textarea"></textarea>
-                    <label for="comment">Comment</label>
-                  </div>
-                  <div className="card-action">
-                    <a className="waves-effect waves-light btn blue-grey" onClick={this.props.actions.submitComment}>Submit</a>
-                  </div>
+              <div className="row blue-grey darken-4 z-depth-2">
+                <div className="input-field col m8 s12">
+                  <input placeholder="Your Thoughts" id="comment" className="validate white-text" type="text"/>
                 </div>
-              </ul>
+                <div className="card-action col m4 s12">
+                  <a className="waves-effect waves-light btn grey darken-3" onClick={this.props.actions.submitComment}>Post</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -58,7 +50,7 @@ class Comments extends React.Component {
     else {
       return (
         <div>
-          <div className="card">
+          <div className="card grey hoverable">
             <div className="card-content">
               <div className="row">
                 <div className="col s1"><i className="small material-icons">chat</i></div>
@@ -69,6 +61,14 @@ class Comments extends React.Component {
               </div>
               <div id="scrollable">
                 { comments }
+              </div>
+              <div className="row blue-grey darken-4 z-depth-2">
+                <div className="input-field col m8 s12">
+                  <input placeholder="Your Thoughts" id="comment" className="validate white-text" type="text"/>
+                </div>
+                <div className="card-action col m4 s12">
+                  <a className="waves-effect waves-light btn grey darken-3" onClick={this.props.actions.login}>Login</a>
+                </div>
               </div>
             </div>
           </div>
