@@ -54,6 +54,7 @@ currentSongRef.on('value', function(snapshot){
 // Currently uses jQuery to grab the elements from the form
 // Will not submit if artist or songName is empty, tags submission with user's displayName
 actions.submitComment = function(){
+  console.log("here")
   var comment = $("#comment").val()
   var displayName = data.user.username
   var image = data.user.imageURL
@@ -104,18 +105,37 @@ actions.submitSong = function(){
   
 }
 
+actions.deleteSong = function(songKey){
+  var specificSongRef = songListRef.child(songKey)
+  specificSongRef.remove()
+}
+
+actions.addSong = function(songKey){
+  currentSongRef.remove()
+  var specificSongRef = songListRef.child(songKey)
+  for (var i=0; i<data.songList.length; i++){
+    if (data.songList[i][0] == songKey){
+      var songName = data.songList[i][1].songName
+      var artist = data.songList[i][1].artist
+    }
+  }
+  console.log(songName)
+  currentSongRef.push().set({
+    songName: songName,
+    artist: artist
+  });
+  specificSongRef.remove()
+}
+
 actions.upVote = function(songKey){
-  console.log(songKey)
   var specificSongRef = songListRef.child(songKey)
   var userName = data.user.username
-  console.log(userName)
   var upVoteRef = specificSongRef.child("upVote").child(userName)
   var downVoteRef = specificSongRef.child("downVote").child(userName)
   downVoteRef.remove()
   upVoteRef.set({
     userName: userName
   })
-  console.log(songKey)
 }
 
 actions.downVote = function(songKey){
@@ -127,7 +147,6 @@ actions.downVote = function(songKey){
   downVoteRef.set({
     userName: userName
   })
-  console.log(songKey)
 }
 
 actions.login = function(){
@@ -152,7 +171,7 @@ actions.login = function(){
         status: 'online'
       }
 
-      var userRef = ref.child('customers').child(user.username)
+      var userRef = ref.child('admins').child(user.username)
 
       // subscribe to the user data
       userRef.on('value', function(snapshot){
@@ -169,7 +188,7 @@ actions.logout = function(){
   if (data.user){
     actions.logged = false
     ref.unauth()
-    var userRef = ref.child('customers').child(data.user.username)
+    var userRef = ref.child('admins').child(data.user.username)
 
     // unsubscribe to the user data
     userRef.off()

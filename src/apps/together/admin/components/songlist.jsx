@@ -7,6 +7,12 @@ MyComponents.Song = React.createClass({
   handleDownVote: function(event) {
     this.props.actions.downVote(this.props.songKey)
   },
+  handleDeleteSong: function(event) {
+    this.props.actions.deleteSong(this.props.songKey)
+  },
+  handleAddSong: function(event) {
+    this.props.actions.addSong(this.props.songKey)
+  },
 
   render: function() {
    var songName = this.props.song['songName']
@@ -44,9 +50,13 @@ MyComponents.Song = React.createClass({
    if (this.props.user) {
      return (
      	<li>
-     		<div className="collapsible-header">{ songName }</div>
-     		<div className="collapsible-body"><p>Artist: { artist }<br/>Album: { album }<br/>Votes: { voteCount }&nbsp; &nbsp; 
-			<a className="btn-small waves-effect waves-light"><i className="small material-icons teal-text" onClick={this.handleUpVote}>thumb_up</i></a> &nbsp; &nbsp;  
+        <input type="hidden" value={songName} id="s_name"/>
+        <input type="hidden" value={artist} id="s_artist"/>
+        <div className="collapsible-header"><a className="btn-small waves-effect waves-light"><i className="small material-icons green-text" onClick={this.handleDeleteSong}>delete</i></a>
+			<a className="btn-small waves-effect waves-light"><i className="small material-icons green-text" onClick={this.handleAddSong}>playlist_add</i></a>{ songName }</div>
+     	<div className="collapsible-body"><p>Artist: { artist }<br/>Album: { album }<br/>Votes: { voteCount }
+			<a className="btn-small waves-effect waves-light">
+			<i className="small material-icons teal-text" onClick={this.handleUpVote}>thumb_up</i></a>&nbsp; &nbsp; 
 			<a className="btn-small waves-effect waves-light"><i className="small material-icons teal-text" onClick={this.handleDownVote}>thumb_down</i></a></p></div>
       </li>
      );
