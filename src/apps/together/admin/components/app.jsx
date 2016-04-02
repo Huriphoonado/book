@@ -9,6 +9,9 @@ class App extends React.Component {
     return (
       <div>
         <MyComponents.NavBar actions={this.props.actions}/>
+        <MyComponents.CurrentSong
+          user={this.props.data.user}
+          currentSong={this.props.data.currentSong}/>
         <MyComponents.User
           user={this.props.data.user}
           actions={this.props.actions}
@@ -26,21 +29,18 @@ class App extends React.Component {
                 songList={this.props.data.songList}/>
             </div>
             <div className="col s12 m6">
-              <MyComponents.CurrentSong
-                user={this.props.data.user}
-                currentSong={this.props.data.currentSong}/>
               <MyComponents.Comments
                 actions={this.props.actions}
                 user={this.props.data.user}
                 Comments={this.props.data.songDiscussion}/>
             </div>
-          </div>  
+          </div>
         </div>
       </div>
     );
   }
-  
-  
+
+
 }
 
 MyComponents.App = App

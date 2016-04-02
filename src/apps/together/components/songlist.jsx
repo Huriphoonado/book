@@ -11,7 +11,7 @@ MyComponents.Song = React.createClass({
   render: function() {
    var songName = this.props.song['songName']
    var artist = this.props.song['artist']
-   
+
    if (typeof this.props.song['album'] == "undefined"){
     var album = "None Provided"
    }
@@ -45,8 +45,8 @@ MyComponents.Song = React.createClass({
      return (
      	<li>
      		<div className="collapsible-header">{ songName }</div>
-     		<div className="collapsible-body"><p>Artist: { artist }<br/>Album: { album }<br/>Votes: { voteCount }&nbsp; &nbsp; 
-			<a className="btn-small waves-effect waves-light"><i className="small material-icons teal-text" onClick={this.handleUpVote}>thumb_up</i></a> &nbsp; &nbsp;  
+     		<div className="collapsible-body"><p>Artist: { artist }<br/>Album: { album }<br/>Votes: { voteCount }&nbsp; &nbsp;
+			<a className="btn-small waves-effect waves-light"><i className="small material-icons teal-text" onClick={this.handleUpVote}>thumb_up</i></a> &nbsp; &nbsp;
 			<a className="btn-small waves-effect waves-light"><i className="small material-icons teal-text" onClick={this.handleDownVote}>thumb_down</i></a></p></div>
       </li>
      );
@@ -101,9 +101,9 @@ class SongList extends React.Component {
         <div className="card">
           <div className="card-content">
             <ul className="tabs">
-              <li className="tab col s6"><a href="#new">New Beats</a></li>
-              <li className="tab col s6"><a href="#top">Hot Tracks</a></li>
-            </ul>     
+              <li className="tab col s6"><a href="#new" style={{color:'black'}}>New Beats</a></li>
+              <li className="tab col s6"><a href="#top" style={{color:'black'}}>Hot Tracks</a></li>
+            </ul>
             <ul className="collapsible" data-collapsible="expandable" id='new'>
               { sortedListByTime }
             </ul>
@@ -111,7 +111,7 @@ class SongList extends React.Component {
               { sortedListByVote }
             </ul>
           </div>
-        </div>      
+        </div>
       </div>
     )
   }

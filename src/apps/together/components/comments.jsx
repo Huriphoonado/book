@@ -1,14 +1,15 @@
 MyComponents.Comment = React.createClass({
   render: function() {
     return (
-      <div className="card">
-        <div className="card-content">
+      <div className="card blue-grey darken-1 z-depth-0">
+        <div className="card-content white-text">
+          {this.props.discuss.comment}
+          <br/>
+          <br/>
           <div className="chip">
             <img src={this.props.discuss.imageURL}/>
             {this.props.discuss.userName}
           </div>
-          <br/>
-          {this.props.discuss.comment}
         </div>
       </div>
     );
@@ -26,11 +27,11 @@ class Comments extends React.Component {
       return (
         <div>
           <div className="card">
-            <div className="card-content">
+            <div className="card-content ">
               <div className="row">
                 <div className="col s1"><i className="small material-icons">chat</i></div>
                 <div className="col s6"><h6>Discussion</h6></div>
-                <div className="progress ">
+                <div className="progress blue-grey">
                   <div className="determinate"></div>
                 </div>
               </div>
@@ -51,7 +52,7 @@ class Comments extends React.Component {
                 </div>
               </ul>
             </div>
-          </div>      
+          </div>
         </div>
       )
     }
@@ -63,7 +64,7 @@ class Comments extends React.Component {
               <div className="row">
                 <div className="col s1"><i className="small material-icons">chat</i></div>
                 <div className="col s6"><h6>Discussion</h6></div>
-                <div className="progress ">
+                <div className="progress blue-grey">
                   <div className="determinate"></div>
                 </div>
               </div>
@@ -71,7 +72,7 @@ class Comments extends React.Component {
                 { comments }
               </div>
             </div>
-          </div>      
+          </div>
         </div>
       )
     }

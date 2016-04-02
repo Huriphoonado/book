@@ -1,34 +1,24 @@
 
 class CurrentSong extends React.Component {
   render(){
-  	
+
   	var currentSong = this.props.currentSong.map(function(s,i){
-      // TODO - Figure out how to order these by upvotes minus downvotes
       return (
-		    <li key={i}>
-				<div>Song Name: { s.songName }</div>
-				<div>Artist: { s.artist }</div>
-		    </li>		
+		    <a key={i} className="brand-logo center">
+          <i className="material-icons left">play_circle_outline</i>
+          Now Playing: { s.songName } by { s.artist }
+		    </a>
       )
     })
 
     return (
-      <div>
-        <div className="card"> 
-          <div className="card-content">
-		        <div className="row">
-              <div className="col s1"><i className="small material-icons">play_circle_outline</i></div>
-              <div className="col s6"><h6>Current Song</h6></div>
-              <div className="progress ">
-				        <div className="determinate"></div>
-              </div>
-		        </div>
-            <ul>
-			 { currentSong }
-            </ul>
-          </div>
-        </div>      
+    <nav>
+      <div className="nav-wrapper blue-grey darken-4">
+        { currentSong }
+        <ul className="left hide-on-med-and-down">
+        </ul>
       </div>
+    </nav>
     )
   }
 
