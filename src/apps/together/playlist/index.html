@@ -52,7 +52,6 @@
       var today = new Date();
       $(".card-title").append(' on ' + today.getMonth() + '/' + today.getDay())
 
-      _.reverse(songList)
       _(songList).forEach(function(song) {
         // song.artist, song.songName
         $(".card-content").append('<p>' + song.songName + ' by ' + song.artist + '</p>')
