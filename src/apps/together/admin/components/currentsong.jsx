@@ -17,7 +17,7 @@ class CurrentSong extends React.Component {
         <div className="nav-wrapper blue-grey darken-4">
           { currentSong }
           <ul className="right hide-on-med-and-down">
-            <li><a href="../playlist/" target="_blank"><i className="material-icons left">view_list</i>Make Playlist</a></li>
+            <li><a href="../playlist/" target="_blank"><i className="material-icons left">playlist_add</i>Make Playlist</a></li>
           </ul>
           <ul className="left hide-on-med-and-down">
             <li><a href="#" onClick={this.props.actions.reset}><i className="material-icons left">clear_all</i>New Session</a></li>
