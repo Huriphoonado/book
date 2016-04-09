@@ -9,7 +9,7 @@ var data = {
 // a single 'handlers' object that holds all the actions of your entire app
 var actions = {}
 
-// Main render() function. 
+// Main render() function.
 //     Call whenever the app's UI needs to to re-rendered.
 //     'data' and 'actions' are injected into the app.
 function render(){
@@ -29,6 +29,7 @@ var ref = new Firebase('https://rocknroll.firebaseio.com/')
 var songListRef = ref.child('songList')
 var songDiscussionRef = ref.child('songDiscussion')
 var currentSongRef = ref.child('currentSong')
+var historyRef = ref.child('history')
 
 songListRef.on('value', function(snapshot){
     data.songList = _.toPairs(snapshot.val())
@@ -54,7 +55,6 @@ currentSongRef.on('value', function(snapshot){
 // Currently uses jQuery to grab the elements from the form
 // Will not submit if artist or songName is empty, tags submission with user's displayName
 actions.submitComment = function(){
-  console.log("here")
   var comment = $("#comment").val()
   var displayName = data.user.username
   var image = data.user.imageURL
@@ -72,8 +72,9 @@ actions.submitComment = function(){
       userName: displayName
     });
     $("#comment").val("");
+    $("#scrollable").animate({ scrollTop: 10000}, 100);
   }
-  
+
 }
 
 actions.submitSong = function(){
@@ -102,7 +103,7 @@ actions.submitSong = function(){
     $("#artist").val("");
     $("#album").val("");
   }
-  
+
 }
 
 actions.deleteSong = function(songKey){
@@ -124,7 +125,22 @@ actions.addSong = function(songKey){
     songName: songName,
     artist: artist
   });
+  historyRef.push().set({
+    songName: songName,
+    artist: artist
+  });
   specificSongRef.remove()
+}
+
+actions.reset= function(){
+  var confirmed = confirm('Are you sure you want to start a new session? Doing so will clear all previous songs and comments.')
+  console.log(confirmed)
+  if (confirmed) {
+    currentSongRef.remove()
+    historyRef.remove()
+    songListRef.remove()
+    songDiscussionRef.remove()
+  }
 }
 
 actions.upVote = function(songKey){

@@ -15,7 +15,8 @@ class CurrentSong extends React.Component {
     <nav>
       <div className="nav-wrapper blue-grey darken-4">
         { currentSong }
-        <ul className="left hide-on-med-and-down">
+        <ul className="right hide-on-med-and-down">
+          <li><a href="playlist/" target="_blank"><i className="material-icons left">view_list</i>Make Playlist</a></li>
         </ul>
       </div>
     </nav>

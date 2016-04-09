@@ -81,6 +81,7 @@ class Comments extends React.Component {
       $('.collapsible').collapsible({
         accordion : false
       });
+      $("#scrollable").animate({ scrollTop: 10000}, 100);
     });
   }
 }

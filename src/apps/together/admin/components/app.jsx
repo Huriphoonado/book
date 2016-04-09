@@ -11,7 +11,8 @@ class App extends React.Component {
         <MyComponents.NavBar actions={this.props.actions}/>
         <MyComponents.CurrentSong
           user={this.props.data.user}
-          currentSong={this.props.data.currentSong}/>
+          currentSong={this.props.data.currentSong}
+          actions={this.props.actions}/>
         <MyComponents.User
           user={this.props.data.user}
           actions={this.props.actions}

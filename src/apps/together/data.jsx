@@ -9,7 +9,7 @@ var data = {
 // a single 'handlers' object that holds all the actions of your entire app
 var actions = {}
 
-// Main render() function. 
+// Main render() function.
 //     Call whenever the app's UI needs to to re-rendered.
 //     'data' and 'actions' are injected into the app.
 function render(){
@@ -71,8 +71,9 @@ actions.submitComment = function(){
       userName: displayName
     });
     $("#comment").val("");
+    $("#scrollable").animate({ scrollTop: 10000}, 100);
   }
-  
+
 }
 
 actions.submitSong = function(){
@@ -101,7 +102,7 @@ actions.submitSong = function(){
     $("#artist").val("");
     $("#album").val("");
   }
-  
+
 }
 
 actions.upVote = function(songKey){
