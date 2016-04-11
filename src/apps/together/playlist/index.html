@@ -49,8 +49,10 @@
 
     historyRef.once('value', function(snapshot) {
       var songList = _.values(snapshot.val())
-      var today = new Date();
-      $(".card-title").append(' on ' + today.getMonth() + '/' + today.getDay())
+      var today = new Date()
+      var month = today.getMonth() + 1
+
+      $(".card-title").append(' on ' + month + '/' + today.getDate())
 
       _(songList).forEach(function(song) {
         // song.artist, song.songName
